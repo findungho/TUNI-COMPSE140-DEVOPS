@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+ service1:
+    image: 5.1-Docker-Compose/service1:v1.0
+    build:
+      dockerfile: Dockerfile
+      context: ./service1
+    ports:
+      - 8001:5000
+    networks:
+      - backend
+    restart: unless-stopped
+
+ service2:
+    image: 5.1-Docker-Compose/service2:v1.0
+    build:
+      dockerfile: Dockerfile
+      context: ./service2
+    networks:
+      - backend
+    restart: unless-stopped
+
+networks:
+  backend:
