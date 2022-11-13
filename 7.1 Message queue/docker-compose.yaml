@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  # Rabbitmq service
+  rabbitmq:
+    image: rabbitmq:3
+    hostname: my-rabbit
+    expose: [5672]
+
+  # Original service
+  orig:
+    build:
+      dockerfile: Dockerfile
+      context: ./ORIG
+    restart: always
+
+  # Intermediate service
+  imed:
+    build:
+      dockerfile: Dockerfile
+      context: ./IMED
+    restart: always
+
+  # Observer service
+  obser:
+    build:
+      dockerfile: Dockerfile
+      context: ./OBSE
+    volumes:
+      - ./:/data
+    restart: always
+  
+  # HTTP server
+  httpserv:
+    build:
+      dockerfile: Dockerfile
+      context: ./HTTPSERV
+    volumes_from:
+      - obser
+    ports:
+      - 8080:8080
+    restart: always
